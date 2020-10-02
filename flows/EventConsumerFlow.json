@@ -1,0 +1,63 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "Event consumer flow",
+		"description": "A sample flow that is going to be triggered by an Event flow-trigger.",
+		"author": "support@axway.com",
+		"license": "ISC"
+	},
+	"parameter": {
+		"properties": {
+			"params": {},
+			"request": {
+				"description": "The event data."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration."
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment."
+			}
+		},
+		"additionalProperties": false
+	},
+	"start": "javascript.1",
+	"nodes": {
+		"javascript.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
+			"name": "Log Message",
+			"method": "Execute",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$",
+					"metaName": "Data",
+					"metaDescription": "The value to apply as the `data` argument to the JavaScript code. For objects and arrays, `data` is passed by reference."
+				},
+				{
+					"name": "code",
+					"type": "string",
+					"value": "\"console.log(`[${new Date().toLocaleString()}] Event received:`, data.request);\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises."
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "",
+					"routes": [],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Execute"
+		}
+	}
+}

@@ -1,0 +1,84 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "Event producer flow",
+		"description": "A sample flow that is going to trigger an Event flow-trigger.",
+		"author": "support@axway.com",
+		"license": "ISC"
+	},
+	"parameter": {
+		"properties": {
+			"params": {},
+			"request": {},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration."
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment."
+			}
+		},
+		"additionalProperties": false
+	},
+	"start": "event.1",
+	"nodes": {
+		"event.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-ft-event/event",
+			"name": "Emit event",
+			"method": "emit",
+			"parameters": [
+				{
+					"name": "event",
+					"type": "string",
+					"value": "\"beep\"",
+					"metaName": "Event name",
+					"metaDescription": "The name of the event to emit to be handled by the event flow-trigger."
+				},
+				{
+					"name": "data",
+					"type": "string",
+					"value": "\"BEEP\"",
+					"metaName": "Data",
+					"metaDescription": "The data to emit."
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "",
+					"routes": [
+						"setcontext.1"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Emit event"
+		},
+		"setcontext.1": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"name": "Set Response",
+			"method": "setcontext",
+			"parameters": [
+				{
+					"name": "value",
+					"type": "string",
+					"value": "\"Sent event\"",
+					"metaName": "Value"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response.body",
+					"routes": [],
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set Context"
+		}
+	}
+}

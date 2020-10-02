@@ -1,0 +1,277 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Order Managment API",
+    "version": "1.0",
+    "description": "Order management API",
+    "contact": {
+      "name": "Axway support",
+      "url": "https://axway.com",
+      "email": "support@axway.com"
+    }
+  },
+  "host": "localhost",
+  "paths": {
+    "/orders": {
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Orders",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          }
+        },
+        "summary": "Get Orders",
+        "parameters": [],
+        "operationId": "getOrders",
+        "description": "Return all orders",
+        "x-flow": "orderManagmentApi-getOrders"
+      },
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "201": {
+            "description": "Order created",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "summary": "Create Order",
+        "operationId": "createOrder",
+        "description": "Create an order",
+        "x-flow": "orderManagmentApi-createOrder"
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "summary": "Find Order by ID",
+        "description": "Returns a single Order",
+        "operationId": "getOrderById",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of pet to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Order  not found"
+          }
+        },
+        "x-flow": "orderManagmentApi-getOrderById"
+      },
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "Updates a Order",
+        "operationId": "updateOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of pet to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "x-flow": "orderManagmentApi-updateOrder"
+      },
+      "delete": {
+        "tags": [
+          "order"
+        ],
+        "summary": "Deletes a order",
+        "operationId": "deleteOrder",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Order id to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        },
+        "x-flow": "orderManagmentApi-deleteOrder"
+      }
+    }
+  },
+  "basePath": "/v1",
+  "schemes": [
+    "http"
+  ],
+  "definitions": {
+    "Order": {
+      "type": "object",
+      "description": "Order",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "createdDate": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "address": {
+          "$ref": "#/definitions/Address"
+        },
+        "price": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "x-examples": {
+        "example-1": {
+          "id": "string",
+          "userId": "string",
+          "productId": "string",
+          "createdDate": "string",
+          "email": "string",
+          "address": {
+            "addressLine": "string",
+            "city": "string",
+            "state": "string",
+            "zipCode": 0,
+            "countryCode": "string"
+          },
+          "price": 0,
+          "status": "string"
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "title": "Address",
+      "description": "address",
+      "properties": {
+        "addressLine": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "integer"
+        },
+        "countryCode": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json",
+    "application/xml"
+  ],
+  "tags": [
+    {
+      "name": "order",
+      "description": "Everything about your Orders",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://axway.com"
+      }
+    }
+  ]
+}

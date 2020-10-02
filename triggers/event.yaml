@@ -1,0 +1,13 @@
+triggers:
+  beep-event:
+    enabled: true
+    name: Beep
+    parameters:
+      # the event name (case-sensitive)
+      event: beep
+    invoke:
+      flow: EventConsumerFlow
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env

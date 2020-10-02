@@ -1,0 +1,96 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "Kafka consumer flow",
+		"description": "Example of how to consume messages from a Kafka topic."
+	},
+	"parameter": {
+		"properties": {
+			"request": {
+				"description": "The request"
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false
+	},
+	"start": "javascript.1",
+	"nodes": {
+		"javascript.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
+			"name": "Execute",
+			"method": "Execute",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$",
+					"metaName": "Data",
+					"metaDescription": "The value to apply as the `data` argument to the JavaScript code. For objects and arrays, `data` is passed by reference."
+				},
+				{
+					"name": "code",
+					"type": "string",
+					"value": "\"console.log('KafkaConsumer flow received message from Kafka topic:', data.request.value);\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises."
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.result",
+					"routes": [
+						"event.1"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Execute"
+		},
+		"event.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-ft-event/event",
+			"name": "Emit event",
+			"method": "emit",
+			"parameters": [
+				{
+					"name": "event",
+					"type": "string",
+					"value": "\"beep\"",
+					"metaName": "Event name",
+					"metaDescription": "The name of the event to emit to be handled by the event flow-trigger."
+				},
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$",
+					"metaName": "Data",
+					"metaDescription": "The data to emit."
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": null,
+					"routes": [],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Emit event"
+		}
+	}
+}
