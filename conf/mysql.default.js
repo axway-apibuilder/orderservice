@@ -16,10 +16,8 @@ module.exports = {
 			host: 'localhost',
 			port: 3306,
 			database: 'orders',
-			//user: process.env.MYSQL_USER,
-			//password: process.env.MYSQL_PASSWORD,
-          	user: 'root',
-          	password: 'axway',
+			user: process.env.MYSQL_USER,
+			password: process.env.MYSQL_PASSWORD,
 
 			// Create models based on your schema that can be used in your API.
 			generateModelsFromSchema: true,
