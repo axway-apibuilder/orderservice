@@ -84,7 +84,7 @@
 				{
 					"name": "data",
 					"type": "jsonpath",
-					"value": "$.params",
+					"value": "$.params.body",
 					"metaName": "data"
 				}
 			],
@@ -165,7 +165,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"console.log(data.params);\\n \\n const status = {\\n   status: 'PENDING'\\n};\\n\\n\\treturn Object.assign(data.params, status);\"",
+					"value": "\"console.log(data.params);\\n \\n const status = {\\n   status: 'PENDING'\\n};\\n\\n\\treturn Object.assign(data.params.body, status);\"",
 					"metaName": "Code",
 					"metaDescription": "A JavaScript function body. Supports `await` and returning promises."
 				}
