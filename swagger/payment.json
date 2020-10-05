@@ -1,0 +1,172 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "paymentservice",
+		"description": "An API Builder service",
+		"version": "1.0.0"
+	},
+	"host": "localhost:8081",
+	"basePath": "/api/v1",
+	"security": [{
+		"basicAuth": []
+	}],
+	"paths": {
+		"/accounts": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "List of user accounts",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Account"
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {}
+					}
+				},
+				"summary": "Get Accounts",
+				"description": "Return all Accounts",
+				"operationId": "getAccounts",
+				"produces": ["application/json"]
+			},
+			"post": {
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object",
+							"properties": {}
+						}
+					},
+					"201": {
+						"description": "Accounts",
+						"schema": {
+							"$ref": "#/definitions/Account"
+						}
+					},
+					"400": {
+						"description": "Invalid input"
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {}
+					}
+				},
+				"summary": "Create Account",
+				"description": "Create an Account",
+				"operationId": "createAccount",
+				"consumes": ["application/json", "application/xml"],
+				"parameters": [{
+					"in": "body",
+					"name": "body",
+					"schema": {
+						"$ref": "#/definitions/Account"
+					}
+				}],
+				"produces": ["application/json"]
+			}
+		},
+		"/payments/credit": {
+			"post": {
+				"responses": {
+					"200": {
+						"description": "Add payment",
+						"schema": {
+							"$ref": "#/definitions/Payment"
+						}
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {}
+					}
+				},
+				"summary": "Credit Paymnet",
+				"description": "Credit a Payment",
+				"operationId": "creditPayment",
+				"consumes": ["application/json", "application/xml"],
+				"parameters": [{
+					"in": "body",
+					"name": "body",
+					"schema": {
+						"$ref": "#/definitions/Payment"
+					}
+				}],
+				"produces": ["application/json"]
+			}
+		},
+		"/payments/debit": {
+			"post": {
+				"responses": {
+					"200": {
+						"description": "Debit Payment",
+						"schema": {
+							"$ref": "#/definitions/Payment"
+						}
+					},
+					"400": {
+						"description": "Invalid input"
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {}
+					}
+				},
+				"summary": "Debit Payment",
+				"description": "Debit Payment",
+				"operationId": "debitPayment",
+				"consumes": ["application/json", "application/xml"],
+				"parameters": [{
+					"in": "body",
+					"name": "body",
+					"schema": {
+						"$ref": "#/definitions/Payment"
+					}
+				}],
+				"produces": ["application/json"]
+			}
+		}
+	},
+	"definitions": {
+		"Payment": {
+			"type": "object",
+			"description": "Payment",
+			"properties": {
+				"userId": {
+					"type": "string"
+				},
+				"transactionAmount": {
+					"type": "number"
+				},
+				"status": {
+					"type": "string"
+				}
+			}
+		},
+		"Account": {
+			"type": "object",
+			"description": "Account",
+			"properties": {
+				"userId": {
+					"type": "string"
+				},
+				"accountBalance": {
+					"type": "number"
+				}
+			}
+		}
+	},
+	"securityDefinitions": {
+		"basicAuth": {
+			"type": "basic",
+			"description": "Require authorized access to API"
+		}
+	},
+	"schemes": ["http"]
+}

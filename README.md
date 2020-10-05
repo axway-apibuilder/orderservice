@@ -303,11 +303,50 @@ Variable Placeholder | Description
 
 
 
+CREATE TABLE `orders` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`userId` VARCHAR(36),
+	`productId` VARCHAR(36),
+	`createdDate` DATE,
+	`email` VARCHAR(63),
+	`price` DOUBLE,
+	`status` VARCHAR(50),
+	PRIMARY KEY (`id`)
+);
+
+ALTER TABLE orders ADD COLUMN quantity INT AFTER email;
+
+CREATE TABLE `account` (
+	`userId` VARCHAR(36),
+	`accountBalance` VARCHAR(36),
+	PRIMARY KEY (`userId`)
+);
+
+
+
+CREATE TABLE `productinventory` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(200),
+	`quantity` INT,
+	`price` DOUBLE,
+	PRIMARY KEY (`id`)
+);
+
+
 {
-  
   "userId": "123",
   "productId": "1234",
   "createdDate": "2020-09-30",
   "email": "rnatarajan@axway.com",
-  "price": 200
+  "price": 2000
+}
+
+
+{
+  "userId": "123",
+  "productId": "121313",
+  "createdDate": "2020-09-30",
+  "email": "rnatarajan@axway.com",
+  "price": 100,
+  "status": "pending"
 }

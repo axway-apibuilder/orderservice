@@ -208,6 +208,9 @@
         "address": {
           "$ref": "#/definitions/Address"
         },
+        "quantity": {
+          "type": "number"
+        },
         "price": {
           "type": "number"
         },

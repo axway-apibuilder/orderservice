@@ -1,0 +1,128 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Order Managment Sync API",
+      "version": "2.0",
+      "description": "Order management Sync API",
+      "contact": {
+        "name": "Axway support",
+        "url": "https://axway.com",
+        "email": "support@axway.com"
+      }
+    },
+    "host": "localhost",
+    "paths": {
+      "/orders": {    
+        "post": {
+          "tags": [
+            "ordersyc"
+          ],
+          "responses": {
+            "200": {
+                "description": "Order created",
+                "schema": {
+                  "$ref": "#/definitions/Order"
+                }
+            },
+            "201": {
+              "description": "Order created",
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            },
+            "400": {
+              "description": "Invalid input"
+            }
+          },
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          ],
+          "summary": "Create Order",
+          "operationId": "createSyncOrder",
+          "description": "Create an order"
+          
+        }
+      }
+    },
+    "basePath": "/v2",
+    "schemes": [
+      "http"
+    ],
+    "definitions": {
+      "Order": {
+        "type": "object",
+        "description": "Order",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/definitions/Address"
+          },
+          "price": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "title": "Address",
+        "description": "address",
+        "properties": {
+          "addressLine": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "zipCode": {
+            "type": "integer"
+          },
+          "countryCode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "produces": [
+      "application/json"
+    ],
+    "consumes": [
+      "application/json",
+      "application/xml"
+    ],
+    "tags": [
+      {
+        "name": "ordersync",
+        "description": "Everything about your Orders",
+        "externalDocs": {
+          "description": "Find out more",
+          "url": "https://axway.com"
+        }
+      }
+    ]
+  }
