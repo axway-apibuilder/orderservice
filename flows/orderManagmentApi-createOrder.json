@@ -117,6 +117,13 @@
 					"value": "200",
 					"metaName": "Status",
 					"metaDescription": "The HTTP status code"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.created",
+					"metaName": "Body",
+					"metaDescription": "The response payload"
 				}
 			],
 			"outputs": {

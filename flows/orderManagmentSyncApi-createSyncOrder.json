@@ -34,7 +34,7 @@
 	"nodes": {
 		"javascript.1": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
-			"name": "Execute",
+			"name": "set Oredr status PENDING",
 			"method": "Execute",
 			"parameters": [
 				{

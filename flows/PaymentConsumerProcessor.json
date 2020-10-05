@@ -37,7 +37,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"var orderStatus = data.foundByID.status;\\n  var requestStatus = data.request.value.status;\\n  if( requestStatus == \\\"INVENTORYSUCCESS\\\"){\\n \\t data.foundByID.status = requestStatus + status;\\n  }else{\\n    data.foundByID.status = requestStatus;\\n  }\"",
+					"value": "\"var orderStatus = data.foundByID.status;\\n  var requestStatus = data.request.value.status;\\n  if( orderStatus === \\\"INVENTORYSUCCESS\\\"){\\n \\t data.foundByID.status = requestStatus + orderStatus;\\n  }else{\\n    data.foundByID.status = requestStatus;\\n  }\"",
 					"metaName": "Code",
 					"metaDescription": "A JavaScript function body. Supports `await` and returning promises."
 				}
@@ -78,7 +78,9 @@
 			],
 			"outputs": {
 				"next": {
-					"routes": [],
+					"routes": [
+						"condition.1"
+					],
 					"context": "$.updated",
 					"metaName": "Next"
 				},
@@ -125,6 +127,82 @@
 				}
 			},
 			"metaMethod": "Find by ID"
+		},
+		"condition.1": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Equals",
+			"method": "equals",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.request.value.status",
+					"metaName": "Source",
+					"metaDescription": "The input to test."
+				},
+				{
+					"name": "value",
+					"type": "string",
+					"value": "\"PAYMENTREJECTED\"",
+					"metaName": "Value",
+					"metaDescription": "The value to test input against."
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"kafka.1"
+					],
+					"context": "$.equals",
+					"metaName": "True"
+				},
+				"false": {
+					"routes": [],
+					"context": "$.equals",
+					"metaName": "False"
+				}
+			},
+			"metaMethod": "Equals"
+		},
+		"kafka.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-ft-kafka/kafka",
+			"name": "Publish JSON",
+			"method": "publishJSON",
+			"parameters": [
+				{
+					"name": "message",
+					"type": "jsonpath",
+					"value": "$.updated",
+					"metaName": "Message",
+					"metaDescription": "The message to publish."
+				},
+				{
+					"name": "channelId",
+					"type": "string",
+					"value": "\"kafka-1\"",
+					"metaName": "Channel ID",
+					"metaDescription": "The Kafka channel ID as configured in triggers/kafka.yml."
+				},
+				{
+					"name": "topic",
+					"type": "string",
+					"value": "\"order-events\"",
+					"metaName": "Topic",
+					"metaDescription": "The topic."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [],
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Publish JSON"
 		}
 	}
 }
