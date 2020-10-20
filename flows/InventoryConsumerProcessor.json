@@ -1,8 +1,8 @@
 {
 	"schemaVersion": "4",
 	"info": {
-		"name": "Order Consumer Processor",
-		"description": "Order Consumer Processor"
+		"name": "Inventory Consumer Processor",
+		"description": "Inventory Consumer Processor"
 	},
 	"parameter": {
 		"properties": {
@@ -20,7 +20,7 @@
 		},
 		"additionalProperties": false
 	},
-	"start": "javascript.1",
+	"start": "orders.1",
 	"nodes": {
 		"javascript.1": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
@@ -37,7 +37,7 @@
 				{
 					"name": "code",
 					"type": "string",
-					"value": "\"console.log(data);\"",
+					"value": "\"var orderStatus = data.foundByID.status;\\n  var requestStatus = data.request.value.status;\\n  if( orderStatus === \\\"PAYMENTSUCCESS\\\"){\\n \\t data.foundByID.status = requestStatus + orderStatus;\\n  }else{\\n    data.foundByID.status = requestStatus;\\n  }\"",
 					"metaName": "Code",
 					"metaDescription": "A JavaScript function body. Supports `await` and returning promises."
 				}
@@ -46,7 +46,7 @@
 				"next": {
 					"context": "$.result",
 					"routes": [
-						"orders.1"
+						"orders.2"
 					],
 					"metaName": "Next"
 				},
@@ -60,20 +60,52 @@
 		},
 		"orders.1": {
 			"type": "nodehandler://api-builder-flow-invoke/model/mysql/orders",
-			"name": "Update",
-			"method": "update",
+			"name": "Find by ID",
+			"method": "findByID",
 			"parameters": [
-				{
-					"name": "data",
-					"type": "jsonpath",
-					"value": "$.request.value",
-					"metaName": "data"
-				},
 				{
 					"name": "id",
 					"type": "jsonpath",
 					"value": "$.request.value.id",
 					"metaName": "id"
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"javascript.1"
+					],
+					"context": "$.foundByID",
+					"metaName": "Next"
+				},
+				"notfound": {
+					"routes": [],
+					"metaName": "Not Found"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Find by ID"
+		},
+		"orders.2": {
+			"type": "nodehandler://api-builder-flow-invoke/model/mysql/orders",
+			"name": "Update",
+			"method": "update",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "jsonpath",
+					"value": "$.request.value.id",
+					"metaName": "id"
+				},
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$.foundByID",
+					"metaName": "data"
 				}
 			],
 			"outputs": {

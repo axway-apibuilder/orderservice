@@ -12,12 +12,12 @@ channels:
       brokers: localhost:9092
 triggers:
   my-kafka-1:
-    name: Quick Start
+    name: Payment Consumer
     enabled: true
     channel: kafka-1
     parameters:
       # the consumer group ID:
-      groupId: quickstart
+      groupId: orderpaymentevents
       topic: payment-events
       # supports: JSON, string, binary
       messageFormat: JSON
@@ -26,6 +26,23 @@ triggers:
       fromBeginning: 'false'
     invoke:
       flow: PaymentConsumerProcessor
+      parameters:
+        request: $.request
+  my-kafka-2:
+    name: Inventory Cosumber
+    enabled: true
+    channel: kafka-1
+    parameters:
+      # the consumer group ID:
+      groupId: orderinventoryevents
+      topic: inventory-events
+      # supports: JSON, string, binary
+      messageFormat: JSON
+      # enable to read all messages from the beginning when joining the
+      # consumer group.
+      fromBeginning: 'false'
+    invoke:
+      flow: InventoryConsumerProcessor
       parameters:
         request: $.request
   
